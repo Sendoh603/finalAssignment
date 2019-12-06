@@ -6,7 +6,7 @@ gulp.task("default", function() {
 });
 
 exports.default = () => (
-  gulp.src('src/app.css')
+  gulp.src('src/css/style.css')
       .pipe(autoprefixer({
           cascade: false
       }))
