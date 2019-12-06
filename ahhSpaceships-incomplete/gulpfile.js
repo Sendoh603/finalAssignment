@@ -6,6 +6,7 @@ const babel = require('gulp-babel');
 var concat = require('gulp-concat');
 var uglify = require('gulp-uglify');
 var pipeline = require('readable-stream').pipeline;
+const browserSync = require('browser-sync').create();
 
 gulp.task("default", function() {
   console.log('Hello world');
@@ -56,4 +57,24 @@ gulp.task('compress', function () {
 gulp.task('copy', function () {
   gulp.src('./index.html')
       .pipe(gulp.dest('./copyHtml/'));
+});
+
+gulp.task("default", ["styles"], function() {
+  gulp.watch("src/**/*", ["styles"]);
+
+  browserSync.init({
+    server: "./"
+  });
+});
+
+gulp.task("styles", function() {
+  gulp
+    .src("src/**/*")
+    .pipe(
+      autoprefixer({
+        browsers: ["last 2 versions"]
+      })
+    )
+    .pipe(gulp.dest("./newfolder"))
+    .pipe(browserSync.stream());
 });
