@@ -4,6 +4,8 @@ let cleanCSS = require('gulp-clean-css');
 const imagemin = require('gulp-imagemin');
 const babel = require('gulp-babel');
 var concat = require('gulp-concat');
+var uglify = require('gulp-uglify');
+var pipeline = require('readable-stream').pipeline;
 
 gulp.task("default", function() {
   console.log('Hello world');
@@ -38,13 +40,15 @@ gulp.task('default', () =>
 );
 
 gulp.task('scripts', function() {
-  return gulp.src('./lib/*.js')
-    .pipe(concat('all.js'))
+  return gulp.src('src/js/app.js', 'src/js/engine.js', 'src/js/resources.js')
+    .pipe(concat({ path: 'main.js', stat: { mode: 0666 }}))
     .pipe(gulp.dest('./dist/'));
 });
 
-gulp.task('scripts', function() {
-  return gulp.src('src/js/app.js', 'src/js/engine.js', 'src/js/resources.js')
-    .pipe(concat('main.js'))
-    .pipe(gulp.dest('./dist/'));
+gulp.task('compress', function () {
+  return pipeline(
+        gulp.src('src/js/*.js'),
+        uglify(),
+        gulp.dest('dist')
+  );
 });
