@@ -52,3 +52,8 @@ gulp.task('compress', function () {
         gulp.dest('dist')
   );
 });
+
+gulp.task('copy', function () {
+  gulp.src('./index.html')
+      .pipe(gulp.dest('./copyHtml/'));
+});
